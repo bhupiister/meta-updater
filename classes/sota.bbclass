@@ -4,6 +4,7 @@ SOTA_CLIENT_PROV ??= "aktualizr-shared-prov"
 SOTA_DEPLOY_CREDENTIALS ?= "1"
 SOTA_HARDWARE_ID ??= "${MACHINE}"
 
+
 IMAGE_CLASSES += " image_types_ostree image_types_ota image_repo_manifest"
 IMAGE_INSTALL:append:sota = " aktualizr aktualizr-info ${SOTA_CLIENT_PROV} \
                               ostree os-release ostree-kernel ostree-initramfs \
@@ -13,8 +14,8 @@ IMAGE_FSTYPES += "${@bb.utils.contains('DISTRO_FEATURES', 'sota', 'ostreepush ga
 IMAGE_FSTYPES += "${@bb.utils.contains('BUILD_OSTREE_TARBALL', '1', 'ostree.tar.bz2', ' ', d)}"
 IMAGE_FSTYPES += "${@bb.utils.contains('BUILD_OTA_TARBALL', '1', 'ota.tar.xz', ' ', d)}"
 
-WKS_FILE:sota ?= "sdimage-sota.wks"
-
+# WKS_FILE:sota ?= "sdimage-sota.wks" Have to move this file to meta-dmg layer
+WKS_FILE:sota ?= "sdimage-imx8-sota.wks.in"
 EXTRA_IMAGEDEPENDS:append:sota = " parted-native mtools-native dosfstools-native"
 
 INITRAMFS_FSTYPES ?= "${@oe.utils.ifelse(d.getVar('OSTREE_BOOTLOADER') == 'u-boot', 'cpio.gz.u-boot', 'cpio.gz')}"
